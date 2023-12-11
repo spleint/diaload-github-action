@@ -36,6 +36,7 @@ echo "App ID: $APP_ID"
 echo "File: $FILE"
 echo "Group ID: $GROUP_ID"
 echo "Workspace ID: $WORKSPACE_ID"
+echo "token ID: $API_TOKEN "
 
 # Construct the diaload command
 DIALOAD_CMD="diaload create-release -n \"$COMBINED_RELEASE_NOTES\" -a \"$APP_ID\" -f \"$FILE\""
