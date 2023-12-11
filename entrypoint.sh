@@ -48,8 +48,14 @@ fi
 # Make the POST request using curl
 curl -X POST $POST_URL \
      -H "Authorization: Bearer $API_TOKEN" \
-     -H "X-App-Origin: actions" \ # Added custom header
-     -F "$POST_FIELDS" \
+     -H "X-App-Origin: cli" \
+     -H "Accept: application/json" \
+     -H "Accept-Language: en-US" \
+     -F "app_id=$APP_ID" \
+     -F "release_notes=$COMBINED_RELEASE_NOTES" \
+     -F "source=actions" \
+     -F "group_id=$GROUP_ID" \
+     -F "organisation_id=$WORKSPACE_ID" \
      -F "file=@$FILE"
 
 # Add any additional handling or commands as needed
