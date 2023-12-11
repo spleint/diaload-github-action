@@ -11,13 +11,7 @@ RELEASE_NOTES=$INPUT_RELEASE_NOTES
 GIT_RELEASE_NOTES=$INPUT_GIT_RELEASE_NOTES
 INCLUDE_GIT_COMMIT_ID=$INPUT_INCLUDE_GIT_COMMIT_ID
 GROUP_ID=$INPUT_GROUP_ID
-WORKSPACE_ID=$INPUT_WORKSPACE_ID # New input for workspace ID
-
-# Install diaload-cli
-yarn global add diaload-cli
-
-# Export the API token to the environment variable expected by the CLI tool
-export DIALOAD_ACCESS_TOKEN=$API_TOKEN
+WORKSPACE_ID=$INPUT_WORKSPACE_ID
 
 # Combine release notes if both are provided
 COMBINED_RELEASE_NOTES="$RELEASE_NOTES"
@@ -38,20 +32,24 @@ echo "Group ID: $GROUP_ID"
 echo "Workspace ID: $WORKSPACE_ID"
 echo "token ID: $API_TOKEN "
 
-# Construct the diaload command
-DIALOAD_CMD="diaload create-release -n \"$COMBINED_RELEASE_NOTES\" -a \"$APP_ID\" -f \"$FILE\""
+# Prepare the POST request
+POST_URL="https://console.diaload.com/appservice/releases"
+POST_FIELDS="app_id=$APP_ID&release_notes=$COMBINED_RELEASE_NOTES&source=actions"
 
-# Add the -g parameter if GROUP_ID is provided
+# Add optional fields if provided
 if [ -n "$GROUP_ID" ]; then
-    DIALOAD_CMD="$DIALOAD_CMD -g \"$GROUP_ID\""
+    POST_FIELDS="$POST_FIELDS&group_id=$GROUP_ID"
 fi
 
-# Add the -w parameter if WORKSPACE_ID is provided
 if [ -n "$WORKSPACE_ID" ]; then
-    DIALOAD_CMD="$DIALOAD_CMD -w \"$WORKSPACE_ID\""
+    POST_FIELDS="$POST_FIELDS&organisation_id=$WORKSPACE_ID"
 fi
 
-# Execute the constructed command
-eval $DIALOAD_CMD
+# Make the POST request using curl
+curl -X POST $POST_URL \
+     -H "Authorization: Bearer $API_TOKEN" \
+     -H "X-App-Origin: actions" \ # Added custom header
+     -F "$POST_FIELDS" \
+     -F "file=@$FILE"
 
 # Add any additional handling or commands as needed
