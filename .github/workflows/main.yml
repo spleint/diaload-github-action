@@ -16,6 +16,7 @@ jobs:
           git_release_notes: true
           include_git_commit_id: true
           release_notes: "release notes from actions"
+          group_id: 8u49aec8-f76c-44bf-a1b9-283abef47d30
 
   macos:
     runs-on: macos-latest
@@ -26,8 +27,9 @@ jobs:
         uses: ./
         with:
           api_token: ${{secrets.DIALOAD_API_TOKEN}}
-          app_id: 9a4fd561-596d-44bc-ac8a-2f03553f574e
+          app_id: 0a926aa9-1740-4fb2-bb02-eb89820acb80
           file: sample-app.ipa
           git_release_notes: false
           include_git_commit_id: false
           release_notes: "my release notes here..."
+          group_id: 8u49aec8-f76c-44bf-a1b9-283abef47d30

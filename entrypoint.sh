@@ -30,7 +30,6 @@ echo "App ID: $APP_ID"
 echo "File: $FILE"
 echo "Group ID: $GROUP_ID"
 echo "Workspace ID: $WORKSPACE_ID"
-echo "token ID: $API_TOKEN "
 
 # Prepare the POST request
 POST_URL="https://api.diaload.com/appservice/releases"
@@ -46,7 +45,7 @@ if [ -n "$WORKSPACE_ID" ]; then
 fi
 
 # Make the POST request using curl
-curl -X POST $POST_URL \
+HTTP_RESPONSE=$(curl -X POST $POST_URL \
      -H "Authorization: Bearer $API_TOKEN" \
      -H "X-App-Origin: cli" \
      -H "Accept: application/json" \
@@ -56,6 +55,18 @@ curl -X POST $POST_URL \
      -F "source=actions" \
      -F "group_id=$GROUP_ID" \
      -F "organisation_id=$WORKSPACE_ID" \
-     -F "file=@$FILE"
+     -F "file=@$FILE" \
+     -w '%{http_code}' -o response.txt -s)
+
+     echo "HTTP Response Code: $HTTP_RESPONSE"
+
+     # Check if the response is not a success code (200-299)
+     if [ $HTTP_RESPONSE -lt 200 ] || [ $HTTP_RESPONSE -gt 299 ]; then
+          ERROR_CODE=$(jq -r '.error_code' response.json)
+          ERROR_MESSAGE=$(jq -r '.message' response.json)
+
+          echo "Failed to create new release: $ERROR_MESSAGE, Error code - $ERROR_CODE"
+          exit 1
+     fi
 
 # Add any additional handling or commands as needed
