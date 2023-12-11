@@ -11,11 +11,11 @@ jobs:
         uses: ./
         with:
           api_token: ${{secrets.DIALOAD_API_TOKEN}}
-          app_id: ${{secrets.DIALOAD_APP_ID}}
+          app_id: 9a4fd561-596d-44bc-ac8a-2f03553f574e
           file: sample-app.apk
           git_release_notes: true
           include_git_commit_id: true
-          release_notes: ""
+          release_notes: "release notes from actions"
 
   macos:
     runs-on: macos-latest
@@ -26,7 +26,7 @@ jobs:
         uses: ./
         with:
           api_token: ${{secrets.DIALOAD_API_TOKEN}}
-          app_id: ${{secrets.DIALOAD_APP_ID}}
+          app_id: 9a4fd561-596d-44bc-ac8a-2f03553f574e
           file: sample-app.ipa
           git_release_notes: false
           include_git_commit_id: false
