@@ -1,0 +1,37 @@
+name: Workflow to upload apk and ipa to Diaload app distribution
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get sample .apk for test purposes
+        run: wget https://github.com/testappio/cli/raw/main/sample-apps/sample-app.apk
+      - name: Upload .apk artifact to Diaload app distribution
+        uses: ./
+        with:
+          api_token: ${{secrets.DIALOAD_API_TOKEN}}
+          app_id: ${{secrets.DIALOAD_APP_ID}}
+          file: sample-app.apk
+          git_release_notes: true
+          include_git_commit_id: true
+          release_notes: ""
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get sample .ipa for test purposes
+        run: wget https://github.com/testappio/cli/raw/main/sample-apps/sample-app.ipa
+      - name: Upload .ipa artifact to Diaload app distribution
+        uses: ./
+        with:
+          api_token: ${{secrets.DIALOAD_API_TOKEN}}
+          app_id: ${{secrets.DIALOAD_APP_ID}}
+          file: sample-app.ipa
+          git_release_notes: false
+          include_git_commit_id: false
+          release_notes: "my release notes here..."

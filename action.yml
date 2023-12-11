@@ -1,0 +1,45 @@
+name: "Diaload App Distribution"
+description: "GitHub Action that uploads artifacts to Diaload App Distribution"
+author: "Support <support@diaload.com>"
+inputs:
+  api_token:
+    description: "Get API Access Token through the CLI tool https://www.npmjs.com/package/diaload-cli#6-create-access-token"
+    required: true
+  app_id:
+    description: "Get App ID through the CLI tool https://https://www.npmjs.com/package/diaload-cli#4-list-apps"
+    required: true
+  file:
+    description: "Artifact to upload (.apk or .ipa)"
+    required: true
+  release_notes:
+    description: "Release notes will be visible for testers and will be on top of git release notes"
+    required: false
+  git_release_notes:
+    description: "Automatically collect the release notes from the last git commit message"
+    required: false
+  include_git_commit_id:
+    description: "Include the last git commit ID with the release notes"
+    required: false
+  group_id:
+    description: "If you want to assign this release to a group, specify the valid group ID. If the ID is invalid the release will still be created, but not assigned to any group and the script will succeed"
+    required: false
+branding:
+  color: "green"
+  icon: "send"
+runs:
+  using: "composite"
+  steps:
+    - run: npm install -g dialog-cli
+      shell: bash
+    - run: chmod +x ${{ github.action_path }}/entrypoint.sh
+      shell: bash
+    - run: sh ${{ github.action_path }}/entrypoint.sh
+      env:
+        INPUT_API_TOKEN: ${{ inputs.api_token }}
+        INPUT_APP_ID: ${{ inputs.app_id }}
+        INPUT_FILE: ${{ inputs.file }}
+        INPUT_RELEASE_NOTES: ${{ inputs.release_notes }}
+        INPUT_GIT_RELEASE_NOTES: ${{ inputs.git_release_notes }}
+        INPUT_INCLUDE_GIT_COMMIT_ID: ${{ inputs.include_git_commit_id }}
+        GROUP_ID: ${{ inputs.group_id }}
+      shell: bash
