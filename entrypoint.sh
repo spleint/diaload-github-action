@@ -33,7 +33,7 @@ echo "Workspace ID: $WORKSPACE_ID"
 echo "token ID: $API_TOKEN "
 
 # Prepare the POST request
-POST_URL="https://console.diaload.com/appservice/releases"
+POST_URL="https://api.diaload.com/appservice/releases"
 POST_FIELDS="app_id=$APP_ID&release_notes=$COMBINED_RELEASE_NOTES&source=actions"
 
 # Add optional fields if provided
