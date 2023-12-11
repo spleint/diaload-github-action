@@ -3,7 +3,7 @@
 # Fail the script if any command fails
 set -e
 
-# Your inputs are available as environment variables
+# Inputs are available as environment variables
 API_TOKEN=$INPUT_API_TOKEN
 APP_ID=$INPUT_APP_ID
 FILE=$INPUT_FILE
@@ -11,10 +11,12 @@ RELEASE_NOTES=$INPUT_RELEASE_NOTES
 GIT_RELEASE_NOTES=$INPUT_GIT_RELEASE_NOTES
 INCLUDE_GIT_COMMIT_ID=$INPUT_INCLUDE_GIT_COMMIT_ID
 GROUP_ID=$INPUT_GROUP_ID
+WORKSPACE_ID=$INPUT_WORKSPACE_ID # New input for workspace ID
 
 # Install diaload-cli
 yarn global add diaload-cli
 
+# Export the API token to the environment variable expected by the CLI tool
 export DIALOAD_ACCESS_TOKEN=$API_TOKEN
 
 # Combine release notes if both are provided
@@ -33,13 +35,22 @@ fi
 echo "App ID: $APP_ID"
 echo "File: $FILE"
 echo "Group ID: $GROUP_ID"
+echo "Workspace ID: $WORKSPACE_ID"
 
-# Using diaload-cli to create a release
+# Construct the diaload command
+DIALOAD_CMD="diaload create-release -n \"$COMBINED_RELEASE_NOTES\" -a \"$APP_ID\" -f \"$FILE\""
+
 # Add the -g parameter if GROUP_ID is provided
 if [ -n "$GROUP_ID" ]; then
-    diaload create-release -n "$COMBINED_RELEASE_NOTES" -a "$APP_ID" -f "$FILE" -g "$GROUP_ID"
-else
-    diaload create-release -n "$COMBINED_RELEASE_NOTES" -a "$APP_ID" -f "$FILE"
+    DIALOAD_CMD="$DIALOAD_CMD -g \"$GROUP_ID\""
 fi
+
+# Add the -w parameter if WORKSPACE_ID is provided
+if [ -n "$WORKSPACE_ID" ]; then
+    DIALOAD_CMD="$DIALOAD_CMD -w \"$WORKSPACE_ID\""
+fi
+
+# Execute the constructed command
+eval $DIALOAD_CMD
 
 # Add any additional handling or commands as needed
