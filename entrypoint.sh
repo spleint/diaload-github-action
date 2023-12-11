@@ -56,7 +56,7 @@ HTTP_RESPONSE=$(curl -X POST $POST_URL \
      -F "group_id=$GROUP_ID" \
      -F "organisation_id=$WORKSPACE_ID" \
      -F "file=@$FILE" \
-     -w '%{http_code}' -o response.txt -s)
+     -w '%{http_code}' -o response.json -s)
 
      echo "HTTP Response Code: $HTTP_RESPONSE"
 
