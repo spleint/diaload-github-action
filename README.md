@@ -91,7 +91,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build and export iOS
-        uses: yukiarrr/ios-build-action@v1.4.0
+        uses: spleint/diaload-github-action@v1
         with:
           project-path: ios/diaload.xcodeproj
           workspace-path: ios/diaload.xcworkspace

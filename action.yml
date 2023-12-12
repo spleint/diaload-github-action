@@ -23,17 +23,12 @@ inputs:
   group_id:
     description: "If you want to assign this release to a group, specify the valid group ID. If the ID is invalid the release will still be created, but not assigned to any group and the script will succeed"
     required: false
-  workspace_id:
-    description: "Specify a workspace to upload this release to. This is optional, but highly recommended to avoid undesirable side effects"
-    required: false
 branding:
   color: "green"
   icon: "send"
 runs:
   using: "composite"
   steps:
-    - run: npm install -g diaload-cli
-      shell: bash
     - run: chmod +x ${{ github.action_path }}/entrypoint.sh
       shell: bash
     - run: sh ${{ github.action_path }}/entrypoint.sh
@@ -44,6 +39,5 @@ runs:
         INPUT_RELEASE_NOTES: ${{ inputs.release_notes }}
         INPUT_GIT_RELEASE_NOTES: ${{ inputs.git_release_notes }}
         INPUT_INCLUDE_GIT_COMMIT_ID: ${{ inputs.include_git_commit_id }}
-        GROUP_ID: ${{ inputs.group_id }}
-        WORKSPACE_ID: ${{ inputs.workspace_id }}
+        INPUT_GROUP_ID: ${{ inputs.group_id }}
       shell: bash
