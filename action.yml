@@ -21,7 +21,7 @@ inputs:
     description: "Include the last git commit ID with the release notes"
     required: false
   group_id:
-    description: "If you want to assign this release to a group, specify the valid group ID. If the ID is invalid the release will still be created, but not assigned to any group and the script will succeed"
+    description: "If you want to assign this release to a group, specify the valid group ID. If the ID is invalid the release will still be created, but not assigned to any group and the script will succeed. You can query group Ids using the cli tool https://docs.diaload.com/docs/diaload-cli/available-commands#list-groups"
     required: false
 branding:
   color: "green"
